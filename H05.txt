@@ -1,0 +1,32 @@
+import pandas as pd  # Manejar datos en forma de tablas 
+
+# Ruta de archivo
+file_path = r'C:\Users\karym\Downloads\Python\AirPassengers.csv'
+
+df = pd.read_csv(file_path)  # Leer el archivo CSV y guardarlo en una tabla llamada 'df'
+
+# Solicitar tamaño de ventana
+window = int(input("¡Bienvenido!\nIntroduce el tamaño de la ventana para el cálculo de la media móvil: "))
+
+moving_avg_list = []  #Para guardar los valores de la media móvil
+
+for i in range(len(df)): # Iteramos sobre cada índice 'i' de la columna de pasajeros
+
+    if i < window - 1:  # Si i menor a ventana-1 no hay suficientes datos para calcular la media, colocamos none
+        moving_avg_list.append(None)  # Guardamos valor
+   
+    else:
+        suma = 0  # Inicializamos la suma en 0
+        
+        for j in range(window):  # Calculamos la suma de la ventana de los pasajeros 
+            suma += df['#Passengers'][i - j]  
+            # Sumamos los pasajeros desde el mes actual hacia atrás (i-j)
+            # i mes actual
+        
+        promedio = suma / window  
+        moving_avg_list.append(promedio)  # Guardamos el promedio
+
+df['Moving_Average'] = moving_avg_list # Añadimos la lista de medias móviles al DataFrame
+
+print(df[['#Passengers', 'Moving_Average']].to_string(index=False))  # to_string(index=False) omitir índices
+
